@@ -1,63 +1,56 @@
-import test from './test'
-import jsArray from './js/js-array'
-import css from './css/css'
-import jsDate from './js/js-date'
-import jsMath from './js/js-math'
-import jsNumber from './js/js-number'
-import jsObject from './js/js-object'
-import jsString from './js/js-string'
-import jsMapSet from './js/js-map-set'
-import jsPromise from './js/js-promise'
-import jsGlobal from './js/js-global'
-import jsWords from './js/js-words'
-import jsWebGL from './js/js-WebGL'
+import { chengyu, shici, wordContent } from './kaogong'
+import { buildPracticeRows } from './practice'
+import type { PracticeRow } from './practice'
 
+export type { PracticeRow, WordItem, TextSegment } from './practice'
 
-function splitRow(data: any[]): any[] {
-    let result: any[] = [], row: any[] = [], len = 0;
-    data.forEach((word, i) => {
-        row.push(word);
-        len += (word.text?.length + 1);// 单词长度和一个空格
-        if (len >= 90) { // 超出一行
-            const item = row.pop();  // 取出最后一个
-            result.push(row); // 把row放在result里面
-            row = [item]; // 取出的放到第二行并初始化row
-            len = item.text.length + 1;
-        }
-    })
-    return result
-}
-function getLength(data: any[]): number {
-    return data.reduce((prev, curr) => {
-        return prev + curr.text.length + 1
-    }, 0)
-    
+// ===== 考公词库 =====
+// 每行是一道题：词 + 空格 + 释义，词和释义都要手打
+export const kaogongChengyuData = buildPracticeRows(chengyu)
+export const kaogongShiciData = buildPracticeRows(shici)
+export const kaogongWordData = buildPracticeRows(wordContent)
+export const kaogongAllData = buildPracticeRows(chengyu.concat(shici, wordContent))
+
+export interface WordBank {
+    key: string
+    label: string
+    short: string
+    description: string
+    total: number
+    rows: PracticeRow[]
 }
 
-export const testData = splitRow(test)
-
-export const jsArrayData = splitRow(jsArray)
-
-export const cssData = splitRow(css)
-
-export const jsDateData = splitRow(jsDate)
-
-export const jsMathData = splitRow(jsMath)
-
-export const jsNumberData = splitRow(jsNumber)
-
-export const jsObjectData = splitRow(jsObject)
-
-export const jsStringData = splitRow(jsString)
-
-export const jsMapSetData = splitRow(jsMapSet)
-
-export const jsPromiseData = splitRow(jsPromise)
-
-export const jsGlobalData = splitRow(jsGlobal)
-
-export const jsWordsData = splitRow(jsWords)
-
-export const jsWebGLData = splitRow(jsWebGL)
-
-export const jsAllData = splitRow(jsArray.concat(jsDate, jsMath, jsNumber, jsObject, jsString, jsMapSet, jsPromise, jsGlobal, jsWebGLData))
+export const wordBanks: WordBank[] = [
+    {
+        key: 'chengyu',
+        label: '考公必会成语',
+        short: '必会成语',
+        description: '近五年行测考频最高的 100 个成语，释义与侧重点一并录入',
+        total: kaogongChengyuData.length,
+        rows: kaogongChengyuData
+    },
+    {
+        key: 'shici',
+        label: '高频实词辨析',
+        short: '高频实词',
+        description: '456 组易混实词，共 913 词；对照辨析，一次记清',
+        total: kaogongShiciData.length,
+        rows: kaogongShiciData
+    },
+    {
+        key: 'word',
+        label: 'Word 自定义词库',
+        short: '自定义',
+        description: '把 .docx 放进 content 目录，运行 kaogong:word 即可导入',
+        total: kaogongWordData.length,
+        rows: kaogongWordData
+    },
+    {
+        key: 'all',
+        label: '考公全部词库',
+        short: '全部',
+        description: '成语、实词与自定义词库合并练习',
+        total: kaogongAllData.length,
+        rows: kaogongAllData
+    }
+]

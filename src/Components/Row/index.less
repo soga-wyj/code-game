@@ -1,33 +1,279 @@
-.box {
+.row {
+    --gutter: 46px; // 左侧行号留白，正文悬挂缩进与行号共用
     position: relative;
+    padding: 15px 0 10px;
+    border-bottom: 1px dashed var(--line-soft);
+    list-style: none;
+    scroll-margin: 80px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 13px;
+        bottom: 13px;
+        width: 2px;
+        background: transparent;
+    }
+
+    &[data-active='true'] {
+        cursor: text;
+        background: linear-gradient(90deg, rgba(168, 67, 53, 0.07), rgba(168, 67, 53, 0) 62%);
+
+        &::before {
+            background: var(--seal);
+        }
+
+        .num {
+            color: var(--seal);
+        }
+    }
+
+    &:last-child {
+        border-bottom: 0;
+    }
 }
-.desc {
-    position: absolute;
-    bottom: -105px;
-    height: 60px;
-    background: #fff;
-    box-shadow: 0 0 3px 3px rgba(0,0,0,0.1);
-    z-index: 100;
-    width: 100%;
-    padding: 20px;
-}
-.content-row {
-    display: block;
-    overflow: hidden;
-    width: 100%;
-    border: 0;
-    border-bottom: 1px solid #ddd;
-    outline: none;
-    height: 30px;
-    line-height: 30px;
+
+.line {
+    margin: 0;
+    padding-left: var(--gutter);
+    text-indent: calc(-1 * var(--gutter));
+    font-family: var(--serif);
     font-size: 18px;
-    &:focus {
-        border-bottom: 1px solid #a6c8ff;
+    line-height: 1.9;
+    color: var(--ink-3);
+    overflow-wrap: anywhere;
+}
+
+.num {
+    display: inline-block;
+    width: var(--gutter);
+    padding-right: 12px;
+    text-align: right;
+    text-indent: 0;
+    vertical-align: 3px;
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+}
+
+.char {
+    transition: color 0.12s linear;
+}
+
+.word {
+    color: var(--ink-2);
+    font-weight: 600;
+}
+
+.meaning {
+    font-weight: 400;
+}
+
+.todo {
+    color: var(--ink-3);
+}
+
+.word.todo {
+    color: var(--ink-2);
+}
+
+.ok {
+    color: var(--ink);
+}
+
+.bad {
+    color: var(--seal);
+    text-decoration: underline wavy rgba(168, 67, 53, 0.7);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+}
+
+.cursor {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: -1px;
+        top: 0.12em;
+        width: 2px;
+        height: 1.25em;
+        background: var(--seal);
+        animation: blink 1.05s steps(2, start) infinite;
     }
-    .success {
-        color: #0f0
+}
+
+.gap {
+    display: inline-block;
+    width: 0.56em;
+    text-align: center;
+    color: var(--ink-3);
+    opacity: 0.55;
+    user-select: none;
+}
+
+.gap.ok {
+    opacity: 0.9;
+}
+
+.gap.bad {
+    color: var(--seal);
+    opacity: 1;
+}
+
+// 手迹：把实际打出来的字逐字展示在原文下方，错字一眼可见
+.trace {
+    position: relative;
+    margin: 3px 0 0;
+    padding-left: var(--gutter);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    overflow-wrap: anywhere;
+}
+
+.traceLabel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(var(--gutter) - 10px);
+    text-align: right;
+    font-family: var(--sans);
+    font-size: 9px;
+    line-height: 1.9;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    user-select: none;
+}
+
+.traceChar {
+    transition: color 0.12s linear;
+}
+
+.trace .bad {
+    color: var(--seal);
+    text-decoration: none;
+    background: rgba(168, 67, 53, 0.1);
+    border-radius: 2px;
+}
+
+.traceGap {
+    opacity: 0.55;
+}
+
+.traceGap.bad {
+    opacity: 1;
+}
+
+.meta {
+    margin: 4px 0 0 var(--gutter);
+    min-height: 18px;
+    line-height: 18px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--ink-3);
+    visibility: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &[data-show='true'] {
+        visibility: visible;
     }
-    .error {
-        color: #f00
+}
+
+.badge {
+    margin-right: 16px;
+
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        margin-right: 6px;
+        border-radius: 50%;
+        background: var(--seal);
+        opacity: 0.7;
+        vertical-align: 1px;
+    }
+}
+
+// 真正的输入框隐藏起来，打字结果由上面的逐字文本呈现
+// 位置放在整行下方：输入法候选窗跟随输入框，不会盖住正在打的那一行
+.input {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+    caret-color: transparent;
+    font-size: 16px; // 避免 iOS 聚焦时自动放大页面
+}
+
+@keyframes blink {
+    0%,
+    45% {
+        opacity: 1;
+    }
+    50%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cursor::before {
+        animation: none !important;
+        opacity: 1;
+    }
+}
+
+@media (min-width: 1440px) {
+    .line {
+        font-size: 19px;
+    }
+}
+
+@media (max-width: 620px) {
+    .row {
+        --gutter: 32px;
+        padding: 12px 0 8px;
+    }
+
+    .line {
+        font-size: 16px;
+        line-height: 1.95;
+    }
+
+    .num {
+        padding-right: 9px;
+        font-size: 9px;
+    }
+
+    .meta {
+        margin-top: 2px;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+    }
+
+    .trace {
+        margin-top: 2px;
+        font-size: 15px;
+        line-height: 1.65;
+    }
+
+    .traceLabel {
+        width: calc(var(--gutter) - 8px);
+        line-height: 2;
     }
 }

@@ -11,8 +11,6 @@
 
 /config
 
-/scripts
-
 /public
 
 /build
@@ -36,5 +34,6 @@ yarn-error.log*
 /src/.umi-production
 /src/.umi-test
 /dist
+/offline
 .swc
 

@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "umi dev",
     "build": "umi build",
+    "build:offline": "node scripts/build-offline.mjs",
     "postinstall": "umi setup",
+    "kaogong:word": "node scripts/kaogong-from-word.mjs",
     "setup": "umi setup",
     "start": "npm run dev"
   },

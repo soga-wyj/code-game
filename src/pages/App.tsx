@@ -4,9 +4,6 @@ import Index from '.'
 
 export default function App() {
     return (
-        <div className="container">
-            <Index />
-        </div>
+        <Index />
     );
-    
 }

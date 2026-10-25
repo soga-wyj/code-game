@@ -1,24 +1,67 @@
+:root {
+    --paper: #e9ece4;
+    --paper-deep: #dfe3d9;
+    --sheet: #fbfbf6;
+    --ink: #202a24;
+    --ink-2: #4c5a52;
+    --ink-3: #6f7b73;
+    --line: rgba(32, 42, 36, 0.16);
+    --line-soft: rgba(32, 42, 36, 0.08);
+    --seal: #a84335;
+    --serif: 'Noto Serif SC', 'Source Han Serif SC', 'Songti SC', 'STSong', 'SimSun', serif;
+    --sans: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
+}
+
 * {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
     margin: 0;
-    padding: 0;
-    font-weight: 100!important;
-    font-family: "Lucida Console", "Monaco", "Courier New", "Courier", "monospace", "宋体"!important;
-  }
-  .container {
-    width: 1000px;
-    margin: 0 auto;
-  }
-  .select {
-    display: inline-block;
-    width: 100px;
-    height: 30px;
-  }
-  .button {
-    display: inline-block;
-    width: 100px;
-    height: 30px;
-    vertical-align: middle;
-  }
-  .ml-sm {
-    margin-left: 10px;
-  }
+    min-height: 100%;
+    background-color: var(--paper);
+    background-image: radial-gradient(rgba(32, 42, 36, 0.055) 0.6px, transparent 0.6px);
+    background-size: 18px 18px;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+
+#root {
+    min-height: 100%;
+}
+
+button,
+input {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+    background: rgba(168, 67, 53, 0.18);
+}
+
+:focus-visible {
+    outline: 2px solid var(--seal);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
